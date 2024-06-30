@@ -1,8 +1,11 @@
-import React, { useContext } from "react";
+// AlarmOption.jsx
+import React, { useContext, useState } from "react";
 import "./AlarmOption.css";
 import { minutesNumber, hourNumber } from "../../func";
 import useSelect from "../../hook/useSelect";
 import { AlarmContext } from "../context/ContextAlarm";
+import QuizPrompt from "./QuizPrompt";
+import questions from "./questions";
 
 function AlarmOption() {
   const [hour, setHour] = useSelect("Hour");
@@ -11,10 +14,16 @@ function AlarmOption() {
   const { setAlarmTime, pauseAlarm, hasAlarm, setHasAlarm } =
     useContext(AlarmContext);
 
+  const [showQuiz, setShowQuiz] = useState(false);
+  const [selectedOption, setSelectedOption] = useState("");
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(
+    Math.floor(Math.random() * questions.length)
+  );
+  const [isAnswerCorrect, setIsAnswerCorrect] = useState(false);
+
   const setAlarm = () => {
     if (hasAlarm) {
-      pauseAlarm();
-      setHasAlarm(false);
+      setShowQuiz(true);
       return;
     }
 
@@ -25,6 +34,30 @@ function AlarmOption() {
     ) {
       setHasAlarm(true);
       setAlarmTime(`${hour}:${minutes} ${amPmOption}`);
+    }
+  };
+
+  const handleOptionChange = (event) => {
+    setSelectedOption(event.target.value);
+  };
+
+  const clearAlarm = () => {
+    pauseAlarm();
+    setAlarmTime("");
+    setHasAlarm(false);
+    setShowQuiz(false); // Close the quiz after submission
+  };
+
+  const cancelClearAlarm = () => {
+    setShowQuiz(false);
+  };
+
+  const submitAnswer = () => {
+    if (selectedOption === questions[currentQuestionIndex].options.find(option => option.correct)?.option) {
+      setIsAnswerCorrect(true);
+      clearAlarm();
+    } else {
+      setIsAnswerCorrect(false);
     }
   };
 
@@ -65,6 +98,25 @@ function AlarmOption() {
       >
         {hasAlarm ? "Clear Alarm" : "Set Alarm"}
       </button>
+
+      {showQuiz && (
+        <QuizPrompt
+          question={questions[currentQuestionIndex].question}
+          options={questions[currentQuestionIndex].options}
+          handleOptionChange={handleOptionChange}
+          selectedOption={selectedOption}
+          submitAnswer={submitAnswer} // Pass submitAnswer function as prop
+          cancelClearAlarm={cancelClearAlarm} // Pass cancelClearAlarm function as prop
+          isAnswerCorrect={isAnswerCorrect} // Pass isAnswerCorrect state as prop
+        />
+      )}
+
+      {isAnswerCorrect && (
+        <p className="correct-answer">Correct Answer!</p>
+      )}
+      {!isAnswerCorrect && selectedOption && (
+        <p className="incorrect-answer">Incorrect Answer. Try again!</p>
+      )}
     </div>
   );
 }

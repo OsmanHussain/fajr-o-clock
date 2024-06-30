@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useState } from "react";
 import months from "../../data";
-import Sound from "../../mixkit-casino-win-alarm-and-coins-1990.mp3";
+import Sound from "../../azan1.mp3";
 
 const alarm = new Audio(Sound);
 export const AlarmContext = createContext();

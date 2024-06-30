@@ -41,7 +41,7 @@ select::-webkit-scrollbar-thumb {
   border-right: 2px solid #ffffff;
 }
 
-select option{
+select option {
   display: block;
   background: var(--first-color);
   color: #fff;
@@ -64,4 +64,70 @@ select option{
 .play {
   background-color: orange;
   color: #000;
+}
+
+/* Popup Styles */
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000; /* Ensure popup is on top of other content */
+  text-align: center;
+}
+
+.popup h3 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.popup p {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.popup form {
+  margin-bottom: 20px;
+}
+
+.popup label {
+  margin-right: 10px;
+}
+
+.popup input[type="radio"] {
+  margin-right: 5px;
+}
+
+.popup button {
+  margin-right: 10px;
+  padding: 10px 15px;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.popup button:first-child {
+  background-color: var(--first-color);
+  color: #fff;
+}
+
+.popup button:last-child {
+  background-color: #ccc;
+  color: #000;
+}
+
+.popup .correct-answer {
+  color: green;
+  margin-top: 10px;
+}
+
+.popup .incorrect-answer {
+  color: red;
+  margin-top: 10px;
 }
